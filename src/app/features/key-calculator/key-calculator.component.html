@@ -1,0 +1,87 @@
+<main class="page-shell">
+  <section class="card">
+    <div class="card__header">
+      <div>
+        <span class="eyebrow">Reg App</span>
+        <h1>Расчёт регистрационного ключа</h1>
+      </div>
+      <div class="header-actions">
+        <a routerLink="/history" class="history-link">История</a>
+        <button type="button" class="logout-button" (click)="logout()">Выйти</button>
+      </div>
+    </div>
+
+    <form [formGroup]="form" class="form-grid" (ngSubmit)="calculateKey()">
+      <label class="field field--wide">
+        <span>Сотрудник</span>
+        <input formControlName="employeeName" placeholder="ФИО сотрудника" />
+      </label>
+
+      <label class="field">
+        <span>Род войск</span>
+        <select formControlName="troopsShort">
+          <option value="" disabled>-Выберите-</option>
+          @for (item of troops; track item.value) {
+            <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Тип программного продукта</span>
+        <select formControlName="programCode">
+          <option [ngValue]="null" disabled>-Выберите-</option>
+          @for (item of programs; track item.code) {
+            <option [ngValue]="item.code">{{ item.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Место установки</span>
+        <select formControlName="installPlace">
+          <option value="" disabled>-Выберите-</option>
+          @for (item of installPlaces; track item.value) {
+            <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="field">
+        <span>{{ unitLabel() }}</span>
+        <input formControlName="unitNumber" />
+      </label>
+
+      <label class="field field--wide">
+        <span>Регистрационный номер</span>
+        <input formControlName="registrationNumber" inputmode="numeric" />
+      </label>
+
+      <div class="actions">
+        <button type="submit">Рассчитать регистрационный ключ</button>
+      </div>
+
+      <label class="field field--result field--wide">
+        <span>Регистрационный ключ</span>
+        <input [value]="resultKey()" readonly />
+      </label>
+
+      <div class="prolongation">
+        <label class="field">
+          <span>Продлить ключ до</span>
+          <input type="date" formControlName="prolongationDate" />
+        </label>
+        <button type="button" (click)="calculateProlongationCode()">Рассчитать код продления</button>
+      </div>
+
+      <label class="field field--result field--wide">
+        <span>Код продления</span>
+        <input [value]="prolongationCode()" readonly />
+      </label>
+    </form>
+
+    @if (message()) {
+      <p class="message">{{ message() }}</p>
+    }
+  </section>
+</main>

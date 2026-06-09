@@ -1,0 +1,93 @@
+<main class="page-shell">
+  <section class="card">
+    <div class="card__header">
+      <div>
+        <span class="eyebrow">Журнал</span>
+        <h1>История регистрационных ключей</h1>
+      </div>
+      <div class="header-actions">
+        <a routerLink="/" class="back-link">Назад</a>
+        <button type="button" class="danger" (click)="logout()">Выйти</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" (click)="exportXml()">Экспорт XML</button>
+      <button type="button" class="secondary" (click)="openImport()">Импорт XML</button>
+      <button type="button" class="danger" (click)="clear()">Очистить</button>
+      <input #fileInput type="file" accept=".xml,text/xml" hidden (change)="importXml($event)" />
+    </div>
+
+    @if (items$ | async; as items) {
+      @if (items.length) {
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Дата</th><th>Сотрудник</th><th>Род</th><th>Продукт</th><th>Место</th><th>№</th><th>Рег. номер</th><th>Ключ</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of items; track item.id) {
+                <tr>
+                  <td>{{ item.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+                  <td>{{ item.employeeName }}</td>
+                  <td>{{ item.troopsShort }}</td>
+                  <td>{{ item.programName }}</td>
+                  <td>{{ item.installPlace }}</td>
+                  <td>{{ item.unitNumber }}</td>
+                  <td>{{ item.registrationNumber }}</td>
+                  <td><strong>{{ item.registrationKey }}</strong></td>
+                  <td><button class="icon" (click)="remove(item.id)">×</button></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mobile-list">
+          @for (item of items; track item.id) {
+            <article class="history-item">
+              <div class="history-item__header">
+                <div>
+                  <span class="history-item__eyebrow">{{ item.createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+                  <h2>{{ item.employeeName }}</h2>
+                </div>
+                <button type="button" class="icon" (click)="remove(item.id)">×</button>
+              </div>
+
+              <dl class="history-item__grid">
+                <div>
+                  <dt>Род войск</dt>
+                  <dd>{{ item.troopsShort }}</dd>
+                </div>
+                <div>
+                  <dt>Продукт</dt>
+                  <dd>{{ item.programName }}</dd>
+                </div>
+                <div>
+                  <dt>Место</dt>
+                  <dd>{{ item.installPlace }}</dd>
+                </div>
+                <div>
+                  <dt>№</dt>
+                  <dd>{{ item.unitNumber }}</dd>
+                </div>
+                <div>
+                  <dt>Рег. номер</dt>
+                  <dd>{{ item.registrationNumber }}</dd>
+                </div>
+                <div class="history-item__key">
+                  <dt>Ключ</dt>
+                  <dd>{{ item.registrationKey }}</dd>
+                </div>
+              </dl>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">Пока нет записей</div>
+      }
+    }
+  </section>
+</main>

@@ -1,0 +1,12 @@
+*,
+*::before,
+*::after { box-sizing: border-box; font-family: Inter, Arial, sans-serif; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, #d7f4fb 0, transparent 36%),
+    linear-gradient(135deg, #eef8fb 0%, #dfeef2 45%, #f7fbfc 100%);
+}
